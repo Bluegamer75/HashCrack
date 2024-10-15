@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "HashCrack"
-version = "0.9.0"
+version = "0.9.5"
 dependencies = [
  "hex",
  "indicatif",

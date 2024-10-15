@@ -1,11 +1,13 @@
 use std::io::{self, Write};
 use std::sync::Arc;
+use std::fs::File;
+use std::io::{BufRead, BufReader};
 use rayon::prelude::*;
 use sha2::{Sha256, Digest};
 use md5::Md5;
 use indicatif::{ProgressBar, ProgressStyle};
 
-//Generate the hash with the -hash input
+// Función para generar hash basado en el algoritmo proporcionado
 fn generate_hash(plaintext: &str, algorithm: &str) -> String {
     match algorithm {
         "md5" => {
@@ -22,6 +24,7 @@ fn generate_hash(plaintext: &str, algorithm: &str) -> String {
     }
 }
 
+// Función para realizar ataque de fuerza bruta
 fn brute_force_crack(hash_value: &str, algorithm: &str, max_length: usize) -> Option<String> {
     println!("\nStarting Brute Force Attack, this will take time, relax and let Hashcrack do the work...");
     println!("---------------------------------------------------------------------------------------\n");
@@ -32,7 +35,7 @@ fn brute_force_crack(hash_value: &str, algorithm: &str, max_length: usize) -> Op
     for length in 1..=max_length {
         let total = charset.len().pow(length as u32);
         let pb = ProgressBar::new(total as u64);
-        pb.set_style(ProgressStyle::default_bar() //Progress bar
+        pb.set_style(ProgressStyle::default_bar()
             .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({eta})")
             .unwrap()
             .progress_chars("#>-"));
@@ -62,30 +65,52 @@ fn brute_force_crack(hash_value: &str, algorithm: &str, max_length: usize) -> Op
 
     None
 }
-//main Function that start with the program
+
+// Dictionary attack function
+fn dictionary_attack(hash_value: &str, algorithm: &str, dictionary_path: &str) -> Option<String> {
+    let file = File::open(dictionary_path).expect("Failed to open dictionary file");
+    let reader = BufReader::new(file);
+
+    for line in reader.lines() {
+        let word = line.expect("Error reading line").trim().to_string();
+
+        if generate_hash(&word, algorithm) == hash_value {
+            return Some(word);
+        }
+    }
+
+    None
+}
+
+// Main function in the program
 fn main() {
-    println!("Welcome to Hashcrack 0.9.0");
-    println!("This are the options to run HashCrack:");
+    println!("Welcome to Hashcrack 0.9.5");
     println!("");
-    println!("      -hash (current only in sha256 and md5)");
-    println!("      -bruteforce (try to crack the hash with all the cpu)");
+    println!("Hashcrack is a tool for cracking hashes (md5 and sha256) using brute-force or dictionary attacks.");
+    println!("This program should only be used for pentesting purposes and with explicit permission from the data owner.");
+    println!("");
+    println!("These are the options to run HashCrack:");
+    println!("");
+    println!("      -hash (generate hash with md5 or sha256)");
+    println!("      -bruteforce (try to crack the hash with all the CPU)");
+    println!("      -dictionary (try to crack the hash using a dictionary)");
     println!("      -exit to finish the program");
     println!("");
 
     loop {
         print!("Hashcrack:~$ ");
         io::stdout().flush().unwrap();
-        //here come the command
+        
         let mut command = String::new(); 
         io::stdin().read_line(&mut command).unwrap();
         let command = command.trim();
 
         match command {
-            "-exit" => { //the exit comand, break 
+            "-exit" => {
                 println!("\nFarewell, old friend; in the silence of bits, the depths of hashes await us.\n");
                 break;
             },
-            "-hash" => { //hash program
+            "-hash" => {
                 print!("Enter the text to hash: ");
                 io::stdout().flush().unwrap();
                 let mut plaintext = String::new();
@@ -101,7 +126,7 @@ fn main() {
                 let hashed_text = generate_hash(plaintext, algorithm);
                 println!("Your hash => {}", hashed_text);
             },
-            "-bruteforce" => { //bruteforce program
+            "-bruteforce" => {
                 print!("Enter the hash algorithm (md5 or sha256): ");
                 io::stdout().flush().unwrap();
                 let mut algorithm = String::new();
@@ -125,7 +150,31 @@ fn main() {
                     None => println!("\nFailed to crack the hash :("),
                 }
             },
-            _ => println!("Invalid command. Available commands: -exit, -hash, -bruteforce"),
+            "-dictionary" => {
+                print!("Enter the hash algorithm (md5 or sha256): ");
+                io::stdout().flush().unwrap();
+                let mut algorithm = String::new();
+                io::stdin().read_line(&mut algorithm).unwrap();
+                let algorithm = algorithm.trim();
+
+                print!("Enter the dictionary path: ");
+                io::stdout().flush().unwrap();
+                let mut dictionary_path = String::new();
+                io::stdin().read_line(&mut dictionary_path).unwrap();
+                let dictionary_path = dictionary_path.trim();
+
+                print!("Enter the hash to crack: ");
+                io::stdout().flush().unwrap();
+                let mut hash_to_crack = String::new();
+                io::stdin().read_line(&mut hash_to_crack).unwrap();
+                let hash_to_crack = hash_to_crack.trim();
+
+                match dictionary_attack(hash_to_crack, algorithm, dictionary_path) {
+                    Some(cracked) => println!("\nHash cracked :D -> The plaintext is: {}", cracked),
+                    None => println!("\nFailed to crack the hash with the dictionary :("),
+                }
+            },
+            _ => println!("Invalid command. Available commands: -exit, -hash, -bruteforce, -dictionary"),
         }
     }
 }
