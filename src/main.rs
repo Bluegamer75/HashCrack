@@ -5,6 +5,7 @@ use sha2::{Sha256, Digest};
 use md5::Md5;
 use indicatif::{ProgressBar, ProgressStyle};
 
+//Generate the hash with the -hash input
 fn generate_hash(plaintext: &str, algorithm: &str) -> String {
     match algorithm {
         "md5" => {
@@ -22,7 +23,7 @@ fn generate_hash(plaintext: &str, algorithm: &str) -> String {
 }
 
 fn brute_force_crack(hash_value: &str, algorithm: &str, max_length: usize) -> Option<String> {
-    println!("\nStarting Brute Force Attack, this will take time, relax and let Obsesor do the work...");
+    println!("\nStarting Brute Force Attack, this will take time, relax and let Hashcrack do the work...");
     println!("---------------------------------------------------------------------------------------\n");
 
     let charset: Vec<char> = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()".chars().collect();
@@ -31,7 +32,7 @@ fn brute_force_crack(hash_value: &str, algorithm: &str, max_length: usize) -> Op
     for length in 1..=max_length {
         let total = charset.len().pow(length as u32);
         let pb = ProgressBar::new(total as u64);
-        pb.set_style(ProgressStyle::default_bar()
+        pb.set_style(ProgressStyle::default_bar() //Progress bar
             .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({eta})")
             .unwrap()
             .progress_chars("#>-"));
@@ -61,28 +62,30 @@ fn brute_force_crack(hash_value: &str, algorithm: &str, max_length: usize) -> Op
 
     None
 }
-
+//main Function that start with the program
 fn main() {
-    println!("Welcome to Obsesor Rust Edition!");
-    println!("This are the options to run Obsesor:");
-    println!("-hash (current only in sha256 and md5)");
-    println!("-bruteforce (try to crack the hash with all the cpu)");
-    println!("-exit to finish the program");
+    println!("Welcome to Hashcrack 0.9.0");
+    println!("This are the options to run HashCrack:");
+    println!("");
+    println!("      -hash (current only in sha256 and md5)");
+    println!("      -bruteforce (try to crack the hash with all the cpu)");
+    println!("      -exit to finish the program");
+    println!("");
 
     loop {
-        print!("Obsesor:~$ ");
+        print!("Hashcrack:~$ ");
         io::stdout().flush().unwrap();
-
-        let mut command = String::new();
+        //here come the command
+        let mut command = String::new(); 
         io::stdin().read_line(&mut command).unwrap();
         let command = command.trim();
 
         match command {
-            "-exit" => {
-                println!("\nFarewell my old friend, the abyss awaits...\n");
+            "-exit" => { //the exit comand, break 
+                println!("\nFarewell, old friend; in the silence of bits, the depths of hashes await us.\n");
                 break;
             },
-            "-hash" => {
+            "-hash" => { //hash program
                 print!("Enter the text to hash: ");
                 io::stdout().flush().unwrap();
                 let mut plaintext = String::new();
@@ -98,7 +101,7 @@ fn main() {
                 let hashed_text = generate_hash(plaintext, algorithm);
                 println!("Your hash => {}", hashed_text);
             },
-            "-bruteforce" => {
+            "-bruteforce" => { //bruteforce program
                 print!("Enter the hash algorithm (md5 or sha256): ");
                 io::stdout().flush().unwrap();
                 let mut algorithm = String::new();

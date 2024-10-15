@@ -1,6 +1,6 @@
 [package]
-name = "obsesor_rust"
-version = "0.1.0"
+name = "HashCrack"
+version = "0.9.0"
 edition = "2021"
 
 [dependencies]
