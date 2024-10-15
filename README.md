@@ -2,7 +2,13 @@
 
 HashCrack is an efficient and powerful tool for recovering passwords from hashes. Designed in Rust, this program leverages the speed and security of the language to perform brute-force and dictionary attacks, allowing users to effectively recover lost passwords.
 
-![Rust Hash Cracker Example](media/HashCrackprueba.png)
+The original idea was from Obsesor repository from @AbbysWatcher
+
+AbbysWatcher github: https://github.com/UnknownArtistt
+
+AbbysWatcher project: https://github.com/UnknownArtistt/Obsesor
+
+![Rust Hash Cracker Example](media/HashCracklaunch.png)
 
 ## DISCLAIMER!!!
 
