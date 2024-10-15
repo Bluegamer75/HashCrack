@@ -4,6 +4,14 @@ HashCrack is an efficient and powerful tool for recovering passwords from hashes
 
 ![Rust Hash Cracker Example](media/HashCrackprueba.png)
 
+## DISCLAIMER!!!
+
+HashCrack is a powerful tool designed for recovering passwords from hashes. While this program can be highly effective for password recovery, it is essential to use it ethically and responsibly. The intended use of HashCrack is for legitimate purposes only, such as security auditing, penetration testing, and educational research. Unauthorized use of this software against systems without permission may be illegal and unethical.
+
+By using HashCrack, you acknowledge that you are solely responsible for any consequences arising from your use of this tool. The developers of HashCrack disclaim any liability for misuse or unlawful activities conducted with this software.
+
+Always ensure you have explicit permission to test the security of systems and data before using HashCrack. Use this tool to promote security awareness and protect against potential threats.
+
 ## Key Features
 
 - **Support for Multiple Hash Algorithms:**  
