@@ -2,7 +2,7 @@
 
 Rust Hash Cracker is an efficient and powerful tool for recovering passwords from hashes. Designed in Rust, this program leverages the speed and security of the language to perform brute-force and dictionary attacks, allowing users to effectively recover lost passwords.
 
-![Rust Hash Cracker Example](media/Hashcrackprueba.png)
+![Rust Hash Cracker Example](media/HashCrackprueba.png)
 
 ## Key Features
 
