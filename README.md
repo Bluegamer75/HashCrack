@@ -44,9 +44,9 @@ Rust Hash Cracker is ideal for cybersecurity professionals, researchers, and ent
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/rust-hash-cracker.git
-   cd HashCrack```
-
+   git clone https://https://github.com/Bluegamer75/HashCrack.git
+   cd HashCrack
+  
 2. Build and run the program:
 
    ```rust
